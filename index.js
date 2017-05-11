@@ -29,7 +29,7 @@ $('#field').keypress(function(e) {
 
       //NEED TO FIX API
         for (var i = 0; i<reactants.length; i++) {
-          $.get("https://enthalpy-api.herokuapp.com/" + reactants[i], function(result) {
+          $.getJSON("https://enthalpy-api.herokuapp.com/" + reactants[i] + '/', function(result) {
             numbersReactants.push(result);
             console.log(numbersReactants);
           });
