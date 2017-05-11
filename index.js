@@ -25,12 +25,16 @@ $('#field').keypress(function(e) {
         }
       }
       // Gets numbers
+
+
+      //NEED TO FIX API
         for (var i = 0; i<reactants.length; i++) {
-          $.ajax({url: "https://enthalpy-api.herokuapp.com/" + reactants[i], success: function(result){
+          $.get("https://enthalpy-api.herokuapp.com/" + reactants[i], function(result) {
             numbersReactants.push(result);
-          }});
+            console.log(numbersReactants);
+          });
         }
-        //NEED TO WORKOUT COEFFS
+
 
       console.log(reactants);
     }
