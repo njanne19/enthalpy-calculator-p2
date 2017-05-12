@@ -26,15 +26,13 @@ $('#field').keypress(function(e) {
       }
       // Gets numbers
 
-
-      //NEED TO FIX API
         for (var i = 0; i<reactants.length; i++) {
           $.getJSON("https://enthalpy-api.herokuapp.com/" + reactants[i] + '/', function(result) {
             numbersReactants.push(result);
-            console.log(numbersReactants);
           });
         }
 
+        console.log(numbersReactants);
 
       console.log(reactants);
     }
@@ -48,6 +46,16 @@ $('#field').keypress(function(e) {
           products[i] = "1" + products[i];
         }
       }
+
+      //Gets products numbers
+
+      for (var i = 0; i<products.length; i++) {
+        $.getJSON("https://enthalpy-api.herokuapp.com/" + products[i] + '/', function(result) {
+          numbersProducts.push(result);
+        });
+      }
+
+      console.log(numbersProducts);
 
       console.log(products);
     }
