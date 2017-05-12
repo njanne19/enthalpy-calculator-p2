@@ -8,7 +8,7 @@ $('#field').keypress(function(e) {
   var numbersReactants = [];
   var numbersProducts = [];
   if (key == "13") {
-    //Upon enter sign, do a equals check
+    //Upon enter sign, do an equals check
     var input = $('#field').val();
     if(input.indexOf('=') >= 0) {
       console.log(input);
@@ -18,6 +18,7 @@ $('#field').keypress(function(e) {
     //Starts reactants check
     if (reactants.indexOf("+") > 0) {
       reactants = reactants.split("+");
+    }
       for(var i = 0; i<reactants.length; i++) {
         reactants[i] = reactants[i].replace(/\s/g,'');
         if (isNaN(reactants[i][0])) {
@@ -32,14 +33,12 @@ $('#field').keypress(function(e) {
           });
         }
 
-        console.log(numbersReactants);
 
-      console.log(reactants);
-    }
 
     //Starts products check
     if (products.indexOf("+") > 0) {
       products = products.split("+");
+    }
       for(var i = 0; i<products.length; i++) {
         products[i] = products[i].replace(/\s/g,'');
         if (isNaN(products[i][0])) {
@@ -55,16 +54,26 @@ $('#field').keypress(function(e) {
         });
       }
 
+
+
+
+      //Final Sum
+
+
+      var productSum = numbersProducts.reduce(function (a, b) {
+        return a + b;
+      });
+      var reactantSum = numbersReactants.reduce(function (a, b) {
+        return a + b;
+      });
+
+
+      console.log(numbersReactants);
       console.log(numbersProducts);
+      console.log("Final Enthalpy: ", (productSum));
 
-      console.log(products);
+
+      }
     }
-
-    }
-
-  }
 });
-
-
-
 });
