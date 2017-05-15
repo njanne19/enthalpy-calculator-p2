@@ -18,6 +18,8 @@ $('#field').keypress(function(e) {
     //Starts reactants check
     if (reactants.indexOf("+") > 0) {
       reactants = reactants.split("+");
+    } else {
+      reactants = [reactants];
     }
       for(var i = 0; i<reactants.length; i++) {
         reactants[i] = reactants[i].replace(/\s/g,'');
@@ -29,7 +31,7 @@ $('#field').keypress(function(e) {
 
         for (var i = 0; i<reactants.length; i++) {
           $.getJSON("https://enthalpy-api.herokuapp.com/" + reactants[i] + '/', function(result) {
-            numbersReactants.push(result);
+            numbersReactants.push(result["enthalpy"]);
           });
         }
 
@@ -38,6 +40,8 @@ $('#field').keypress(function(e) {
     //Starts products check
     if (products.indexOf("+") > 0) {
       products = products.split("+");
+    } else {
+      products = [products];
     }
       for(var i = 0; i<products.length; i++) {
         products[i] = products[i].replace(/\s/g,'');
@@ -50,7 +54,7 @@ $('#field').keypress(function(e) {
 
       for (var i = 0; i<products.length; i++) {
         $.getJSON("https://enthalpy-api.herokuapp.com/" + products[i] + '/', function(result) {
-          numbersProducts.push(result);
+          numbersProducts.push(result["enthalpy"]);
         });
       }
 
@@ -60,17 +64,20 @@ $('#field').keypress(function(e) {
       //Final Sum
 
 
-      var productSum = numbersProducts.reduce(function (a, b) {
-        return a + b;
-      });
-      var reactantSum = numbersReactants.reduce(function (a, b) {
-        return a + b;
-      });
+      var productSum = 0;
+      for (var i = 0; i<numbersProducts.length; i++) {
+        productSum += Number(numbersProducts[i]);
+      }
+
+      var reactantSum = 0;
+      for (var i = 0; i<numbersReactants.length; i++) {
+        reactantSum += Number(numbersProducts[i]);
+      }
 
 
       console.log(numbersReactants);
       console.log(numbersProducts);
-      console.log("Final Enthalpy: ", (productSum));
+      console.log("Final Enthalpy: ", (productSum - reactantSum));
 
 
       }
