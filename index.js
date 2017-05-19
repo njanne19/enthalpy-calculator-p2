@@ -5,8 +5,6 @@ $('#field').focus();
 
 $('#field').keypress(function(e) {
   var key = (event.keyCode ? event.keyCode : event.which);
-  var numbersReactants = [];
-  var numbersProducts = [];
   if (key == "13") {
     //Upon enter sign, do an equals check
     var input = $('#field').val();
@@ -27,15 +25,6 @@ $('#field').keypress(function(e) {
           reactants[i] = "1" + reactants[i];
         }
       }
-      // Gets numbers
-
-        for (var i = 0; i<reactants.length; i++) {
-          $.getJSON("https://enthalpy-api.herokuapp.com/" + reactants[i] + '/', function(result) {
-            numbersReactants.push(result["enthalpy"]);
-          });
-        }
-
-
 
     //Starts products check
     if (products.indexOf("+") > 0) {
@@ -50,35 +39,61 @@ $('#field').keypress(function(e) {
         }
       }
 
-      //Gets products numbers
+        //Get The numbersReactants
 
-      for (var i = 0; i<products.length; i++) {
-        $.getJSON("https://enthalpy-api.herokuapp.com/" + products[i] + '/', function(result) {
-          numbersProducts.push(result["enthalpy"]);
+        const productData = products.map((product, index) => {
+          return "";
         });
-      }
+        const reactantData = reactants.map((reactant, index) => {
+          return "";
+        });
+
+        console.log("This should come first");
+
+        const getEProducts = new Promise((resolve,  reject) => {
+          products.forEach((product, index) => {
+            $.getJSON('https://enthalpy-api.herokuapp.com/' + products[index] + '/', (data) => {
+            }).then((data) => {
+              productData[index] = data;
+              if (productData.indexOf("") === -1){
+                resolve("Bonnets");
+                console.log("Meow");
+              }
+            });
+          });
+        });
+
+        const getEReactants = new Promise((resolve, reject) => {
+          reactants.forEach((reactant, index) => {
+            $.getJSON('https://enthalpy-api.herokuapp.com/' + reactants[index] + '/', (data) => {
+            }).then((data) => {
+              reactantData[index] = data;
+              if(reactantData.indexOf("") === -1) {
+                resolve("Bonnets 2");
+                console.log("Meow2");
+              }
+            });
+          });
+        });
 
 
+     Promise.all([getEProducts, getEReactants]).then(() => {
+       let productSum = 0;
+       for (var i = 0; i<productData.length; i++) {
+         productSum += productData[i].enthalpy;
+       }
+       let reactantSum = 0;
+       for (var i = 0; i<reactantData.length; i++) {
+         reactantSum += reactantData[i].enthalpy;
+       }
+       let totalSum = productSum - reactantSum
+       console.log(productSum - reactantSum);
+       $('#title').text(totalSum);
+     });
 
 
-      //Final Sum
-
-
-      var productSum = 0;
-      for (var i = 0; i<numbersProducts.length; i++) {
-        productSum += Number(numbersProducts[i]);
-      }
-
-      var reactantSum = 0;
-      for (var i = 0; i<numbersReactants.length; i++) {
-        reactantSum += Number(numbersProducts[i]);
-      }
-
-
-      console.log(numbersReactants);
-      console.log(numbersProducts);
-      console.log("Final Enthalpy: ", (productSum - reactantSum));
-
+      console.log("These are the reactants(#1) ", reactants);
+      console.log("These are the products(#2) ", products);
 
       }
     }
