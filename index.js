@@ -88,9 +88,10 @@ $('#field').keypress(function(e) {
        }
        let totalSum = productSum - reactantSum
        console.log(productSum - reactantSum);
-       $('#title').text(totalSum);
-     });
-
+      $("#title").text(() => {
+        return "Answer:" + totalSum + " KJ/mol";
+      });
+    });
 
       console.log("These are the reactants(#1) ", reactants);
       console.log("These are the products(#2) ", products);
