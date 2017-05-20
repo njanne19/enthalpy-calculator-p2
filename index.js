@@ -89,7 +89,7 @@ $('#field').keypress(function(e) {
        let totalSum = productSum - reactantSum
        console.log(productSum - reactantSum);
       $("#title").text(() => {
-        return "Answer:" + totalSum + " KJ/mol";
+        return "∆Hº:" + totalSum + " KJ/mol";
       });
     });
 
